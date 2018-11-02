@@ -1,0 +1,117 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+master.openshift.foobar.com
+node1.openshift.foobar.com
+192.168.122.50
+192.168.122.51
+
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+
+## [webservers]
+## alpha.example.org
+## beta.example.org
+## 192.168.1.100
+## 192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+## www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+## [dbservers]
+## 
+## db01.intranet.mydomain.net
+## db02.intranet.mydomain.net
+## 10.25.1.56
+## 10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+## db-[99:101]-node.example.com
+
+[OSEv3:children]
+masters
+nodes
+etcd
+nfs
+
+[OSEv3:vars]
+ansible_ssh_user=root
+openshift_deployment_type=openshift-enterprise
+
+# NTP
+openshift_clock_enabled=true
+
+# Console
+openshift_master_api_port=8443
+openshift_master_console_port=8443
+
+# Metrics
+openshift_metrics_install_metrics=true
+
+# Router and Registry Selector
+openshift_router_selector='node-router=true'
+openshift_registry_selector='node-registry=true'
+
+openshift_node_set_node_ip=True
+osm_use_cockpit=true
+
+# RHN
+oreg_auth_user=${YOUR_REDHAT_SUBSCRIPTION_USERNAME}
+oreg_auth_password=${PASSWORD}
+
+# Disabling some checks
+openshift_disable_check=disk_availability,docker_storage,memory_availability,docker_image_availability,package_availability,package_version
+
+# Additional registries
+openshift_docker_additional_registries=['docker.io']
+openshift_docker_insecure_registries=['docker.io']
+
+## identity provider
+#
+# Password is redhat, to generate new password use: 
+#     htpasswd -n admin
+#     htpasswd -n user1
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+openshift_master_htpasswd_users={'admin': '$apr1$4XqbAef0$18Ov1a1TwSV0id7yY4pC51', 'user1': '$apr1$4XqbAef0$18Ov1a1TwSV0id7yY4pC51'}
+
+# NFS Storage
+# mount point /shared/registry
+# https://docs.openshift.com/container-platform/3.9/install_config/install/advanced_install.html
+openshift_hosted_registry_storage_kind=nfs
+openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+openshift_hosted_registry_storage_nfs_directory=/shared
+openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_registry_storage_volume_name=registry
+openshift_hosted_registry_storage_volume_size=40Gi
+
+[masters]
+master.openshift.foobar.com openshift_schedulable="true" openshift_node_group_name="node-config-master-infra"
+
+[nfs]
+master.openshift.foobar.com
+
+[etcd]
+master.openshift.foobar.com
+
+[nodes]
+master.openshift.foobar.com openshift_node_group_name="node-config-master"
+node1.openshift.foobar.com openshift_node_group_name="node-config-infra"
