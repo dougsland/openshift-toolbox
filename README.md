@@ -68,6 +68,7 @@ Some personal notes, feel free to send patches, comments or fixes
   ```
   # vi /etc/ansible/hosts
   ```
+  *Example: https://github.com/dougsland/openshift-toolbox/blob/master/ansible/hosts*
 
 * Run the Installation Playbooks
 
