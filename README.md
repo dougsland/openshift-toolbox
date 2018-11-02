@@ -103,12 +103,12 @@ Some personal notes, feel free to send patches, comments or fixes
   
 * Create a pod/persistance volume/resource from YAML
   ```
-  # oc create -f path/filname.yaml
+  # oc create -f path/filename.yaml
   ```
 
 * remove a pod/persistance volume/resource from YAML
   ```
-  # oc remove -f path/filname.yaml
+  # oc remove -f path/filename.yaml
   ```
 
 * Additional commands:
