@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# openshift-toolbox
-=======
 # OpenShift Enterprise 3.11  
 
 Some personal notes, feel free to send patches, comments or fixes
@@ -167,4 +164,3 @@ In the [nodes] Section, add `openshift_node_group_name="node-config-infra"`
 
 # Resources
 [Getting started - version 3.11](https://docs.openshift.com/container-platform/3.11/getting_started/)
->>>>>>> initial file
